@@ -5,6 +5,13 @@ const cardTemplate = document.querySelector("#card-template").content.querySelec
 
 // DOM узлы
 const placesWrap = document.querySelector(".places__list");
+const profileEditButton = document.querySelector(".profile__edit-button");
+const addButton = document.querySelector(".profile__add-button");
+const profileForm = document.forms["edit-profile"];
+const profileNameEl = document.querySelector(".profile__title");
+const profileDescriptionEl = document.querySelector(".profile__description");
+const nameInput = profileForm.elements.name;
+const jobInput = profileForm.elements.description;
 
 function createCardElement(data, onDelete) {
   const cardElement = cardTemplate.cloneNode(true);
@@ -29,3 +36,60 @@ function handleDeleteCard(evt) {
 initialCards.forEach((data) => {
   placesWrap.append(createCardElement(data, handleDeleteCard));
 });
+
+profileEditButton.addEventListener('click', editProfile);
+
+addButton.addEventListener('click', addCard);
+
+function editProfile(evt) {
+  const popupEditProfile = document.querySelector(".popup_type_edit");
+
+  popupEditProfile.classList.add("popup_is-opened");
+
+  nameInput.value = profileNameEl.textContent;
+  jobInput.value = profileDescriptionEl.textContent;
+
+  popupEditProfile.addEventListener('click', handleClosePopup);
+  document.addEventListener('keydown', handleClosePopup);
+}
+
+function addCard(evt) {
+  const popupAddCard = document.querySelector(".popup_type_new-card");
+
+  popupAddCard.classList.add("popup_is-opened");
+
+  popupAddCard.addEventListener('click', handleClosePopup);
+}
+
+function handleClosePopup(evt) {
+
+  if (evt.key === 'Escape') {
+    closePopup()
+  }
+
+  if (evt.target.classList.contains("popup__close")) {
+    closePopup()
+  }
+
+  if (evt.target.classList.contains("popup")) {
+    closePopup()
+  }
+
+  document.removeEventListener('keydown', handleClosePopup);
+}
+
+function closePopup() {
+  const popup = document.querySelector(".popup_is-opened");
+  popup.classList.remove("popup_is-opened");
+}
+
+profileForm.addEventListener("submit", submitProfileForm);
+
+function submitProfileForm(evt) {
+  evt.preventDefault();
+
+  profileNameEl.textContent = nameInput.value;
+  profileDescriptionEl.textContent = jobInput.value;
+
+  closePopup();
+}
