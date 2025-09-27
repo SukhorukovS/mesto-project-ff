@@ -1,7 +1,9 @@
-import './pages/index.css';
-import { initialCards } from './cards';
+import "./pages/index.css";
+import { initialCards } from "./cards";
 // Темплейт карточки
-const cardTemplate = document.querySelector("#card-template").content.querySelector(".places__item");
+const cardTemplate = document
+  .querySelector("#card-template")
+  .content.querySelector(".places__item");
 
 // DOM узлы
 const placesWrap = document.querySelector(".places__list");
@@ -12,6 +14,9 @@ const profileNameEl = document.querySelector(".profile__title");
 const profileDescriptionEl = document.querySelector(".profile__description");
 const nameInput = profileForm.elements.name;
 const jobInput = profileForm.elements.description;
+const newCardForm = document.forms["new-place"];
+const placeNameInput = newCardForm.elements["place-name"];
+const placePhotoLinkInput = newCardForm.elements.link;
 
 function createCardElement(data, onDelete) {
   const cardElement = cardTemplate.cloneNode(true);
@@ -37,9 +42,9 @@ initialCards.forEach((data) => {
   placesWrap.append(createCardElement(data, handleDeleteCard));
 });
 
-profileEditButton.addEventListener('click', editProfile);
+profileEditButton.addEventListener("click", editProfile);
 
-addButton.addEventListener('click', addCard);
+addButton.addEventListener("click", addCard);
 
 function editProfile(evt) {
   const popupEditProfile = document.querySelector(".popup_type_edit");
@@ -49,8 +54,8 @@ function editProfile(evt) {
   nameInput.value = profileNameEl.textContent;
   jobInput.value = profileDescriptionEl.textContent;
 
-  popupEditProfile.addEventListener('click', handleClosePopup);
-  document.addEventListener('keydown', handleClosePopup);
+  popupEditProfile.addEventListener("click", handleClosePopup);
+  document.addEventListener("keydown", handleClosePopup);
 }
 
 function addCard(evt) {
@@ -58,24 +63,23 @@ function addCard(evt) {
 
   popupAddCard.classList.add("popup_is-opened");
 
-  popupAddCard.addEventListener('click', handleClosePopup);
+  popupAddCard.addEventListener("click", handleClosePopup);
 }
 
 function handleClosePopup(evt) {
-
-  if (evt.key === 'Escape') {
-    closePopup()
+  if (evt.key === "Escape") {
+    closePopup();
   }
 
   if (evt.target.classList.contains("popup__close")) {
-    closePopup()
+    closePopup();
   }
 
   if (evt.target.classList.contains("popup")) {
-    closePopup()
+    closePopup();
   }
 
-  document.removeEventListener('keydown', handleClosePopup);
+  document.removeEventListener("keydown", handleClosePopup);
 }
 
 function closePopup() {
@@ -92,4 +96,21 @@ function submitProfileForm(evt) {
   profileDescriptionEl.textContent = jobInput.value;
 
   closePopup();
+}
+
+newCardForm.addEventListener("submit", submitNewCardForm);
+
+function submitNewCardForm(evt) {
+  evt.preventDefault();
+
+  if (placeNameInput.value && placePhotoLinkInput) {
+    placesWrap.prepend(
+      createCardElement(
+        { name: placeNameInput.value, link: placePhotoLinkInput.value },
+        handleDeleteCard,
+      )
+    );
+  
+    closePopup();
+  }
 }
