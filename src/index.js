@@ -18,7 +18,7 @@ const newCardForm = document.forms["new-place"];
 const placeNameInput = newCardForm.elements["place-name"];
 const placePhotoLinkInput = newCardForm.elements.link;
 
-function createCardElement(data, onDelete) {
+function createCardElement(data, onDelete, onLike) {
   const cardElement = cardTemplate.cloneNode(true);
   const deleteButton = cardElement.querySelector(".card__delete-button");
 
@@ -29,17 +29,16 @@ function createCardElement(data, onDelete) {
   cardElement.querySelector(".card__title").textContent = data.name;
 
   deleteButton.addEventListener("click", onDelete);
+  cardElement.addEventListener("click", onLike);
   return cardElement;
 }
 
-// должна быть отдельной функций, можно стрелочной
 function handleDeleteCard(evt) {
   evt.target.closest(".card").remove();
 }
 
-// можно сделать и через простой цикл
 initialCards.forEach((data) => {
-  placesWrap.append(createCardElement(data, handleDeleteCard));
+  placesWrap.append(createCardElement(data, handleDeleteCard, handleLikeCard));
 });
 
 profileEditButton.addEventListener("click", editProfile);
@@ -108,9 +107,16 @@ function submitNewCardForm(evt) {
       createCardElement(
         { name: placeNameInput.value, link: placePhotoLinkInput.value },
         handleDeleteCard,
+        handleLikeCard,
       )
     );
   
     closePopup();
+  }
+}
+
+function handleLikeCard(evt) {
+  if (evt.target.classList.contains("card__like-button")) {
+    evt.target.classList.add("card__like-button_is-active");
   }
 }
