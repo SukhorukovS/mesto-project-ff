@@ -18,7 +18,7 @@ const newCardForm = document.forms["new-place"];
 const placeNameInput = newCardForm.elements["place-name"];
 const placePhotoLinkInput = newCardForm.elements.link;
 
-function createCardElement(data, onDelete, onLike) {
+function createCardElement(data, onDelete, onLike, onPhotoClick) {
   const cardElement = cardTemplate.cloneNode(true);
   const deleteButton = cardElement.querySelector(".card__delete-button");
 
@@ -30,6 +30,7 @@ function createCardElement(data, onDelete, onLike) {
 
   deleteButton.addEventListener("click", onDelete);
   cardElement.addEventListener("click", onLike);
+  cardElement.addEventListener("click", onPhotoClick);
   return cardElement;
 }
 
@@ -38,7 +39,9 @@ function handleDeleteCard(evt) {
 }
 
 initialCards.forEach((data) => {
-  placesWrap.append(createCardElement(data, handleDeleteCard, handleLikeCard));
+  placesWrap.append(
+    createCardElement(data, handleDeleteCard, handleLikeCard, handlePhotoCLick)
+  );
 });
 
 profileEditButton.addEventListener("click", editProfile);
@@ -108,9 +111,10 @@ function submitNewCardForm(evt) {
         { name: placeNameInput.value, link: placePhotoLinkInput.value },
         handleDeleteCard,
         handleLikeCard,
+        handlePhotoCLick
       )
     );
-  
+
     closePopup();
   }
 }
@@ -119,4 +123,29 @@ function handleLikeCard(evt) {
   if (evt.target.classList.contains("card__like-button")) {
     evt.target.classList.add("card__like-button_is-active");
   }
+}
+
+function handlePhotoCLick(evt) {
+  if (evt.target.classList.contains("card__image")) {
+    console.log(evt.target.alt);
+    const name = evt.target.alt;
+    const link = evt.target.src;
+    showPhotoPopup({ name, link });
+  }
+}
+
+function showPhotoPopup({ name, link }) {
+  const popupPhoto = document.querySelector(".popup_type_image");
+
+  const imgElement = document.querySelector(".popup__image");
+
+  imgElement.src = link;
+  imgElement.alt = name;
+
+  document.querySelector(".popup__caption").textContent = name;
+
+  popupPhoto.classList.add("popup_is-opened");
+
+  popupPhoto.addEventListener("click", handleClosePopup);
+  document.addEventListener("keydown", handleClosePopup);
 }
