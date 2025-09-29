@@ -3,14 +3,13 @@ import { initialCards } from "./blocks/card/cards";
 import {
   createCardElement,
   handleDeleteCard,
-  addCard,
   handleLikeCard,
-  handlePhotoCLick,
 } from "./blocks/card/card";
 import { editProfile } from "./blocks/profile/profile";
+import { submitNewCardForm, handlePhotoCLick, addCard } from "./blocks/popup/popup";
+import { placesWrap } from "./blocks/card/cards";
 
 // DOM узлы
-const placesWrap = document.querySelector(".places__list");
 const profileEditButton = document.querySelector(".profile__edit-button");
 const addButton = document.querySelector(".profile__add-button");
 
