@@ -9,7 +9,7 @@ const jobInput = profileForm.elements.description;
 profileForm.addEventListener("submit", submitProfileForm);
 
 export function editProfile() {
-  openPopup('edit');
+  openPopup("edit");
   nameInput.value = profileNameEl.textContent;
   jobInput.value = profileDescriptionEl.textContent;
 }

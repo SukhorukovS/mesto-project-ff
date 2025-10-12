@@ -1,13 +1,13 @@
 import "./pages/index.css";
-import { initialCards } from "./blocks/card/cards";
+import { initialCards } from "./components/card/cards";
 import {
   createCardElement,
   handleDeleteCard,
   handleLikeCard,
-} from "./blocks/card/card";
-import { editProfile } from "./blocks/profile/profile";
-import { addCard, openPopup, closePopup } from "./blocks/popup/popup";
-import { placesWrap } from "./blocks/card/cards";
+} from "./components/card/card";
+import { editProfile } from "./components/profile/profile";
+import { addCard, openPopup, closePopup } from "./components/popup/popup";
+import { placesWrap } from "./components/card/cards";
 
 // DOM узлы
 const profileEditButton = document.querySelector(".profile__edit-button");
