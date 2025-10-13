@@ -54,7 +54,7 @@
                 maxlength="40"
                 pattern="^[a-zA-Zа-яА-ЯёЁ\- ]+$"
                 id="name-input"
-                data-error-message="Разрешены только латинские и кириллические буквы, знаки дефиса и пробелы"
+                data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы"
               />
               <span class="popup__input-error name-input-error"></span>
             </label>
@@ -69,7 +69,7 @@
                 maxlength="200"
                 pattern="^[a-zA-Zа-яА-ЯёЁ\- ]+$"
                 id="description-input"
-                data-error-message="Разрешены только латинские и кириллические буквы, знаки дефиса и пробелы"
+                data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы"
               />
               <span class="popup__input-error description-input-error"></span>
             </label>
@@ -92,6 +92,10 @@
                 placeholder="Название"
                 id="place-name-input"
                 required
+                minlength="2"
+                maxlength="30"
+                pattern="^[a-zA-Zа-яА-ЯёЁ\- ]+$"
+                data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы"
               />
               <span class="popup__input-error place-name-input-error"></span>
             </label>

@@ -4,9 +4,10 @@ import {
   createCardElement,
   handleDeleteCard,
   handleLikeCard,
+  addCard,
 } from "./components/card/card";
 import { editProfile } from "./components/profile/profile";
-import { addCard, openPopup, closePopup } from "./components/popup/popup";
+import { openPopup, closePopup } from "./components/popup/popup";
 import { placesWrap } from "./components/card/cards";
 
 // DOM узлы

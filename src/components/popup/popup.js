@@ -31,8 +31,3 @@ export function closePopup() {
   openedPopup.removeEventListener("click", handleClosePopup);
   document.removeEventListener("keydown", handleClosePopup);
 }
-
-export function addCard() {
-  openPopup('new-card');
-  setValidationListeners(document.forms['new-place']);
-}

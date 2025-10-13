@@ -1,6 +1,13 @@
+import { openPopup } from "../popup/popup";
+import { setValidationListeners } from "../form/form";
+
 const cardTemplate = document
   .querySelector("#card-template")
   .content.querySelector(".places__item");
+
+const cardForm = document.forms['new-place'];
+const placeNameInput = cardForm.elements['place-name'];
+const linkInput = cardForm.elements.link;
 
 export function createCardElement({data, onDelete, onLike, onPhotoClick}) {
   const cardElement = cardTemplate.cloneNode(true);
@@ -26,4 +33,11 @@ export function handleDeleteCard(evt) {
 
 export function handleLikeCard(evt) {
   evt.target.classList.toggle("card__like-button_is-active");
+}
+
+export function addCard() {
+  openPopup('new-card');
+  placeNameInput.value = "";
+  linkInput.value = "";
+  setValidationListeners(cardForm);
 }
