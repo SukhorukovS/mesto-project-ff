@@ -1,3 +1,5 @@
+import { setValidationListeners } from "../form/form";
+
 let openedPopup;
 
 export function handleClosePopup(evt) {
@@ -32,4 +34,5 @@ export function closePopup() {
 
 export function addCard() {
   openPopup('new-card');
+  setValidationListeners(document.forms['new-place']);
 }

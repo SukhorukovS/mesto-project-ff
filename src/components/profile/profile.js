@@ -1,3 +1,4 @@
+import { isValid, setValidationListeners } from "../form/form";
 import { closePopup, openPopup } from "../popup/popup";
 
 const profileForm = document.forms["edit-profile"];
@@ -12,6 +13,7 @@ export function editProfile() {
   openPopup("edit");
   nameInput.value = profileNameEl.textContent;
   jobInput.value = profileDescriptionEl.textContent;
+  setValidationListeners(profileForm);
 }
 
 function submitProfileForm(evt) {
