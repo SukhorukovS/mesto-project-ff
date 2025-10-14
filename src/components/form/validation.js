@@ -19,7 +19,6 @@ export function setValidationListeners(
       toggleButtonState(inputList, buttonElement, inactiveButtonClass);
     });
   });
-  toggleButtonState(inputList, buttonElement, inactiveButtonClass);
 }
 
 export function clearValidation(
