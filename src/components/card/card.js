@@ -1,19 +1,20 @@
 import { openPopup } from "../popup/popup";
-import { setValidationListeners } from "../form/form";
+import { clearValidation } from "../form/validation";
+import { validationConfig } from "../../config";
 
 const cardTemplate = document
   .querySelector("#card-template")
   .content.querySelector(".places__item");
 
-const cardForm = document.forms['new-place'];
-const placeNameInput = cardForm.elements['place-name'];
+const cardForm = document.forms["new-place"];
+const placeNameInput = cardForm.elements["place-name"];
 const linkInput = cardForm.elements.link;
 
-export function createCardElement({data, onDelete, onLike, onPhotoClick}) {
+export function createCardElement({ data, onDelete, onLike, onPhotoClick }) {
   const cardElement = cardTemplate.cloneNode(true);
   const deleteButton = cardElement.querySelector(".card__delete-button");
   const likeElement = cardElement.querySelector(".card__like-button");
-  const photoElement = cardElement.querySelector(".card__image")
+  const photoElement = cardElement.querySelector(".card__image");
 
   const cardImage = cardElement.querySelector(".card__image");
   cardImage.src = data.link;
@@ -36,8 +37,8 @@ export function handleLikeCard(evt) {
 }
 
 export function addCard() {
-  openPopup('new-card');
+  openPopup("new-card");
   placeNameInput.value = "";
   linkInput.value = "";
-  setValidationListeners(cardForm);
+  clearValidation(cardForm, validationConfig);
 }

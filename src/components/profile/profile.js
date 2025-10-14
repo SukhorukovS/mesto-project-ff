@@ -1,5 +1,6 @@
-import { isValid, setValidationListeners } from "../form/form";
+import { clearValidation } from "../form/validation";
 import { closePopup, openPopup } from "../popup/popup";
+import { validationConfig } from "../../config";
 
 const profileForm = document.forms["edit-profile"];
 const profileNameEl = document.querySelector(".profile__title");
@@ -13,7 +14,7 @@ export function editProfile() {
   openPopup("edit");
   nameInput.value = profileNameEl.textContent;
   jobInput.value = profileDescriptionEl.textContent;
-  setValidationListeners(profileForm);
+  clearValidation(profileForm, validationConfig);
 }
 
 function submitProfileForm(evt) {

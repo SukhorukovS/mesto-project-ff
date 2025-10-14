@@ -1,5 +1,3 @@
-import { setValidationListeners } from "../form/form";
-
 let openedPopup;
 
 export function handleClosePopup(evt) {

@@ -9,6 +9,8 @@ import {
 import { editProfile } from "./components/profile/profile";
 import { openPopup, closePopup } from "./components/popup/popup";
 import { placesWrap } from "./components/card/cards";
+import { enableValidation } from "./components/form/validation";
+import { validationConfig } from "./config";
 
 // DOM узлы
 const profileEditButton = document.querySelector(".profile__edit-button");
@@ -61,3 +63,5 @@ profileEditButton.addEventListener("click", editProfile);
 addButton.addEventListener("click", addCard);
 
 newCardForm.addEventListener("submit", submitNewCardForm);
+
+enableValidation(validationConfig);
