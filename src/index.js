@@ -6,11 +6,17 @@ import {
   handleLikeCard,
   addCard,
 } from "./components/card/card";
-import { editProfile } from "./components/profile/profile";
+import {
+  editProfile,
+  profileDescriptionEl,
+  profileNameEl,
+  profilePhotoEl,
+} from "./components/profile/profile";
 import { openPopup, closePopup } from "./components/popup/popup";
 import { placesWrap } from "./components/card/cards";
 import { enableValidation } from "./components/form/validation";
 import { validationConfig } from "./config";
+import { getCardList, getProfile } from "./api/api";
 
 // DOM узлы
 const profileEditButton = document.querySelector(".profile__edit-button");
@@ -47,16 +53,24 @@ function submitNewCardForm(evt) {
   }
 }
 
-initialCards.forEach((data) => {
-  placesWrap.append(
-    createCardElement({
-      data,
-      onDelete: handleDeleteCard,
-      onLike: handleLikeCard,
-      onPhotoClick: handlePhotoCLick,
-    })
-  );
-});
+Promise.all([getProfile(), getCardList()])
+  .then(([profile, cardList]) => {
+    profileNameEl.textContent = profile.name;
+    profileDescriptionEl.textContent = profile.about;
+    profilePhotoEl.style.backgroundImage = `url(${profile.avatar})`;
+
+    cardList.forEach((data) => {
+      placesWrap.append(
+        createCardElement({
+          data,
+          onDelete: handleDeleteCard,
+          onLike: handleLikeCard,
+          onPhotoClick: handlePhotoCLick,
+        })
+      );
+    });
+  })
+  .catch((error) => console.log(error));
 
 profileEditButton.addEventListener("click", editProfile);
 

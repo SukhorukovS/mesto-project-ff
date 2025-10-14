@@ -3,8 +3,9 @@ import { closePopup, openPopup } from "../popup/popup";
 import { validationConfig } from "../../config";
 
 const profileForm = document.forms["edit-profile"];
-const profileNameEl = document.querySelector(".profile__title");
-const profileDescriptionEl = document.querySelector(".profile__description");
+export const profileNameEl = document.querySelector(".profile__title");
+export const profileDescriptionEl = document.querySelector(".profile__description");
+export const profilePhotoEl = document.querySelector('.profile__image')
 const nameInput = profileForm.elements.name;
 const jobInput = profileForm.elements.description;
 
