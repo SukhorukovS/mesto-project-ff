@@ -15,3 +15,11 @@ export const updateProfile = (profile) => {
     body: JSON.stringify(profile),
   });
 };
+
+export const createNewCard = (card) => {
+    return doRequest({
+    url: "/cards",
+    method: "POST",
+    body: JSON.stringify(card),
+  });
+}

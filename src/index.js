@@ -16,7 +16,7 @@ import { openPopup, closePopup } from "./components/popup/popup";
 import { placesWrap } from "./components/card/cards";
 import { enableValidation } from "./components/form/validation";
 import { validationConfig } from "./config";
-import { getCardList, getProfile } from "./api/api";
+import { createNewCard, getCardList, getProfile } from "./api/api";
 
 // DOM узлы
 const profileEditButton = document.querySelector(".profile__edit-button");
@@ -37,20 +37,23 @@ function handlePhotoCLick(evt) {
 function submitNewCardForm(evt) {
   evt.preventDefault();
 
-  if (placeNameInput.value && placePhotoLinkInput.value) {
+  createNewCard({
+    name: placeNameInput.value,
+    link: placePhotoLinkInput.value,
+  }).then(({ name, link }) => {
     placesWrap.prepend(
       createCardElement({
-        data: { name: placeNameInput.value, link: placePhotoLinkInput.value },
+        data: { name, link },
         onDelete: handleDeleteCard,
         onLike: handleLikeCard,
         onPhotoClick: handlePhotoCLick,
       })
     );
+  });
 
-    evt.target.reset();
+  evt.target.reset();
 
-    closePopup();
-  }
+  closePopup();
 }
 
 Promise.all([getProfile(), getCardList()])
