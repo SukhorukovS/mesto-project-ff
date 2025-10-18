@@ -9,13 +9,14 @@ const DEFAULT_CONFIG = {
   headers: DEFAULT_HEADERS,
 };
 
-export function doRequest(url, method, headers) {
+export function doRequest({url, method, headers, body}) {
   return fetch(`${DEFAULT_CONFIG.baseurl}${url}`, {
     method,
     headers: {
       ...DEFAULT_CONFIG.headers,
       ...headers,
     },
+    body,
   }).then((res) => {
     if (res.ok) {
       return res.json();

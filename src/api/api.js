@@ -1,9 +1,17 @@
-import { doRequest } from "../utils/fetch"
+import { doRequest } from "../utils/fetch";
 
 export const getProfile = () => {
-  return doRequest('/users/me', 'GET');
-}
+  return doRequest({ url: "/users/me", method: "GET" });
+};
 
 export const getCardList = () => {
-  return doRequest('/cards', 'GET');
-}
+  return doRequest({ url: "/cards", method: "GET" });
+};
+
+export const updateProfile = (profile) => {
+  return doRequest({
+    url: "/users/me",
+    method: "PATCH",
+    body: JSON.stringify(profile),
+  });
+};

@@ -1,11 +1,14 @@
 import { clearValidation } from "../form/validation";
 import { closePopup, openPopup } from "../popup/popup";
 import { validationConfig } from "../../config";
+import { updateProfile } from "../../api/api";
 
 const profileForm = document.forms["edit-profile"];
 export const profileNameEl = document.querySelector(".profile__title");
-export const profileDescriptionEl = document.querySelector(".profile__description");
-export const profilePhotoEl = document.querySelector('.profile__image')
+export const profileDescriptionEl = document.querySelector(
+  ".profile__description"
+);
+export const profilePhotoEl = document.querySelector(".profile__image");
 const nameInput = profileForm.elements.name;
 const jobInput = profileForm.elements.description;
 
@@ -21,8 +24,12 @@ export function editProfile() {
 function submitProfileForm(evt) {
   evt.preventDefault();
 
-  profileNameEl.textContent = nameInput.value;
-  profileDescriptionEl.textContent = jobInput.value;
+  updateProfile({ name: nameInput.value, about: jobInput.value })
+    .then((data) => {
+      profileNameEl.textContent = data.name;
+      profileDescriptionEl.textContent = data.about;
+    })
+    .catch((err) => console.error(err));
 
   closePopup();
 }
