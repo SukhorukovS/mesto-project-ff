@@ -15,12 +15,18 @@ export function createCardElement({ data, onDelete, onLike, onPhotoClick }) {
   const deleteButton = cardElement.querySelector(".card__delete-button");
   const likeElement = cardElement.querySelector(".card__like-button");
   const photoElement = cardElement.querySelector(".card__image");
+  const countLikeElement = cardElement.querySelector(".card__like-count");
 
   const cardImage = cardElement.querySelector(".card__image");
   cardImage.src = data.link;
   cardImage.alt = data.name;
 
   cardElement.querySelector(".card__title").textContent = data.name;
+  
+  if (data.likes?.length) {
+    countLikeElement.textContent = data.likes?.length;
+  }
+  
 
   deleteButton.addEventListener("click", onDelete);
   likeElement.addEventListener("click", onLike);
