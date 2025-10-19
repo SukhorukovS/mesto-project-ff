@@ -40,10 +40,11 @@ function submitNewCardForm(evt) {
   createNewCard({
     name: placeNameInput.value,
     link: placePhotoLinkInput.value,
-  }).then(({ name, link }) => {
+  }).then(({ name, link, owner }) => {
     placesWrap.prepend(
       createCardElement({
         data: { name, link },
+        profileId: owner._id,
         onDelete: handleDeleteCard,
         onLike: handleLikeCard,
         onPhotoClick: handlePhotoCLick,
@@ -66,6 +67,7 @@ Promise.all([getProfile(), getCardList()])
       placesWrap.append(
         createCardElement({
           data,
+          profileId: profile._id,
           onDelete: handleDeleteCard,
           onLike: handleLikeCard,
           onPhotoClick: handlePhotoCLick,

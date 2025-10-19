@@ -1,6 +1,7 @@
 import { openPopup } from "../popup/popup";
 import { clearValidation } from "../form/validation";
 import { validationConfig } from "../../config";
+import { deleteCard } from "../../api/api";
 
 const cardTemplate = document
   .querySelector("#card-template")
@@ -10,7 +11,7 @@ const cardForm = document.forms["new-place"];
 const placeNameInput = cardForm.elements["place-name"];
 const linkInput = cardForm.elements.link;
 
-export function createCardElement({ data, onDelete, onLike, onPhotoClick }) {
+export function createCardElement({ data, profileId, onDelete, onLike, onPhotoClick }) {
   const cardElement = cardTemplate.cloneNode(true);
   const deleteButton = cardElement.querySelector(".card__delete-button");
   const likeElement = cardElement.querySelector(".card__like-button");
@@ -27,15 +28,22 @@ export function createCardElement({ data, onDelete, onLike, onPhotoClick }) {
     countLikeElement.textContent = data.likes?.length;
   }
   
+  if (data.owner._id === profileId) {
+    deleteButton.dataset.cardId = data._id;
+    deleteButton.addEventListener("click", onDelete);
+  } else {
+    deleteButton.style.display = "none";
+  }
 
-  deleteButton.addEventListener("click", onDelete);
   likeElement.addEventListener("click", onLike);
   photoElement.addEventListener("click", onPhotoClick);
   return cardElement;
 }
 
 export function handleDeleteCard(evt) {
-  evt.target.closest(".card").remove();
+  deleteCard(evt.target.dataset.cardId).then((data) => {
+    evt.target.closest(".card").remove();
+  }).catch((err) => console.error(err))
 }
 
 export function handleLikeCard(evt) {

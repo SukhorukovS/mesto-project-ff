@@ -17,9 +17,16 @@ export const updateProfile = (profile) => {
 };
 
 export const createNewCard = (card) => {
-    return doRequest({
+  return doRequest({
     url: "/cards",
     method: "POST",
     body: JSON.stringify(card),
+  });
+}
+
+export const deleteCard = (cardId) => {
+  return doRequest({
+    url: `/cards/${cardId}`,
+    method: "DELETE",
   });
 }
