@@ -30,3 +30,17 @@ export const deleteCard = (cardId) => {
     method: "DELETE",
   });
 }
+
+export const likeCard = (cardId) => {
+  return doRequest({
+    url: `/cards/likes/${cardId}`,
+    method: "PUT",
+  })
+}
+
+export const unLikeCard = (cardId) => {
+  return doRequest({
+    url: `/cards/likes/${cardId}`,
+    method: "DELETE",
+  })
+}

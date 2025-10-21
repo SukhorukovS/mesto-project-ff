@@ -1,7 +1,7 @@
 import { openPopup } from "../popup/popup";
 import { clearValidation } from "../form/validation";
 import { validationConfig } from "../../config";
-import { deleteCard } from "../../api/api";
+import { deleteCard, likeCard, unLikeCard } from "../../api/api";
 
 const cardTemplate = document
   .querySelector("#card-template")
@@ -15,6 +15,12 @@ export function createCardElement({ data, profileId, onDelete, onLike, onPhotoCl
   const cardElement = cardTemplate.cloneNode(true);
   const deleteButton = cardElement.querySelector(".card__delete-button");
   const likeElement = cardElement.querySelector(".card__like-button");
+  likeElement.dataset.cardId = data._id;
+  const hasUserLike = data.likes.some(user => user._id === profileId);
+  if (hasUserLike) {
+    likeElement.classList.add("card__like-button_is-active");
+  };
+
   const photoElement = cardElement.querySelector(".card__image");
   const countLikeElement = cardElement.querySelector(".card__like-count");
 
@@ -47,7 +53,17 @@ export function handleDeleteCard(evt) {
 }
 
 export function handleLikeCard(evt) {
-  evt.target.classList.toggle("card__like-button_is-active");
+  if (!evt.target.classList.contains("card__like-button_is-active")) {
+    likeCard(evt.target.dataset.cardId).then((data) => {
+      evt.target.classList.add("card__like-button_is-active");
+      evt.target.nextElementSibling.textContent = data.likes.length;
+    }).catch((err) => console.error(err))
+  } else {
+    unLikeCard(evt.target.dataset.cardId).then((data) => {
+      evt.target.classList.remove("card__like-button_is-active");
+      evt.target.nextElementSibling.textContent = data.likes.length;
+    }).catch((err) => console.error(err))
+  }
 }
 
 export function addCard() {

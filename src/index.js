@@ -1,5 +1,4 @@
 import "./pages/index.css";
-import { initialCards } from "./components/card/cards";
 import {
   createCardElement,
   handleDeleteCard,
@@ -27,6 +26,8 @@ const newCardForm = document.forms["new-place"];
 const placeNameInput = newCardForm.elements["place-name"];
 const placePhotoLinkInput = newCardForm.elements.link;
 
+let profileId;
+
 function handlePhotoCLick(evt) {
   imgElement.src = evt.target.src;
   imgElement.alt = evt.target.alt;
@@ -40,11 +41,11 @@ function submitNewCardForm(evt) {
   createNewCard({
     name: placeNameInput.value,
     link: placePhotoLinkInput.value,
-  }).then(({ name, link, owner }) => {
+  }).then((data) => {
     placesWrap.prepend(
       createCardElement({
-        data: { name, link },
-        profileId: owner._id,
+        data,
+        profileId,
         onDelete: handleDeleteCard,
         onLike: handleLikeCard,
         onPhotoClick: handlePhotoCLick,
@@ -62,6 +63,7 @@ Promise.all([getProfile(), getCardList()])
     profileNameEl.textContent = profile.name;
     profileDescriptionEl.textContent = profile.about;
     profilePhotoEl.style.backgroundImage = `url(${profile.avatar})`;
+    profileId = profile._id;
 
     cardList.forEach((data) => {
       placesWrap.append(
