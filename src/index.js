@@ -6,6 +6,7 @@ import {
   addCard,
 } from "./components/card/card";
 import {
+  editAvatar,
   editProfile,
   profileDescriptionEl,
   profileNameEl,
@@ -20,6 +21,8 @@ import { createNewCard, getCardList, getProfile } from "./api/api";
 // DOM узлы
 const profileEditButton = document.querySelector(".profile__edit-button");
 const addButton = document.querySelector(".profile__add-button");
+const avatarBlock = document.querySelector(".profile__avatar");
+const avatrEditButton = document.querySelector(".profile__avatar-button");
 const imgElement = document.querySelector(".popup__image");
 const photoCaption = document.querySelector(".popup__caption");
 const newCardForm = document.forms["new-place"];
@@ -82,6 +85,10 @@ Promise.all([getProfile(), getCardList()])
 profileEditButton.addEventListener("click", editProfile);
 
 addButton.addEventListener("click", addCard);
+
+avatarBlock.addEventListener("click", editAvatar);
+
+avatrEditButton.addEventListener("click", editAvatar);
 
 newCardForm.addEventListener("submit", submitNewCardForm);
 
