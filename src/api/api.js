@@ -45,7 +45,7 @@ export const unLikeCard = (cardId) => {
   });
 };
 
-export const changeAvatar = (link) => {
+export const updateAvatar = (link) => {
   return doRequest({
     url: "/users/me/avatar",
     method: "PATCH",
