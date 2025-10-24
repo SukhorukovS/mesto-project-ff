@@ -22,25 +22,33 @@ export const createNewCard = (card) => {
     method: "POST",
     body: JSON.stringify(card),
   });
-}
+};
 
 export const deleteCard = (cardId) => {
   return doRequest({
     url: `/cards/${cardId}`,
     method: "DELETE",
   });
-}
+};
 
 export const likeCard = (cardId) => {
   return doRequest({
     url: `/cards/likes/${cardId}`,
     method: "PUT",
-  })
-}
+  });
+};
 
 export const unLikeCard = (cardId) => {
   return doRequest({
     url: `/cards/likes/${cardId}`,
     method: "DELETE",
-  })
-}
+  });
+};
+
+export const changeAvatar = (link) => {
+  return doRequest({
+    url: "/users/me/avatar",
+    method: "PATCH",
+    body: JSON.stringify({ avatar: link }),
+  });
+};
