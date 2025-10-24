@@ -14,13 +14,21 @@
       <header class="header page__section">
         <img
           src="<%=require('./images/logo.svg')%>"
-          alt="Логотип проекта масто"
+          alt="Логотип проекта место"
           class="logo header__logo"
         />
       </header>
       <main class="content">
         <section class="profile page__section">
-          <div class="profile__image"></div>
+          <div class="profile__avatar">
+            <div class="profile__image"></div>
+            <button class="profile__avatar-button">
+              <img
+                src="<%=require('./images/avatar-edit-icon.svg')%>"
+                alt="Иконка изменения аватара"
+              />
+            </button>
+          </div>
           <div class="profile__info">
             <h1 class="profile__title"></h1>
             <button class="profile__edit-button" type="button"></button>
