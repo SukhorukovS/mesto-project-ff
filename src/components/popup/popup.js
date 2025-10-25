@@ -18,9 +18,9 @@ export function openPopup(type) {
   openedPopup = document.querySelector(`.popup_type_${type}`);
 
   openedPopup.classList.add("popup_is-opened");
-  
+
   openedPopup.addEventListener("click", handleClosePopup);
-  
+
   document.addEventListener("keydown", handleClosePopup);
 }
 
