@@ -33,11 +33,11 @@ function submitProfileForm(evt) {
     .then((data) => {
       profileNameEl.textContent = data.name;
       profileDescriptionEl.textContent = data.about;
+      closePopup();
     })
     .catch((err) => console.error(err))
     .finally(() => {
       evt.submitter.textContent = "Сохранить";
-      closePopup();
     });
 }
 
@@ -55,10 +55,10 @@ function submitAvatarForm(evt) {
   updateAvatar(avatarInput.value)
     .then((data) => {
       profilePhotoEl.style.backgroundImage = `url(${data.avatar})`;
+      closePopup();
     })
     .catch((err) => console.error(err))
     .finally(() => {
       evt.submitter.textContent = "Сохранить";
-      closePopup();
     });
 }

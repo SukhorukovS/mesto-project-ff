@@ -100,10 +100,10 @@ export function submitDeleteCardForm(evt) {
         .querySelector(`.card__delete-button[data-card-id="${cardId}"]`)
         .closest(".card")
         .remove();
+        closePopup();
     })
     .catch((err) => console.error(err))
     .finally(() => {
       evt.submitter.textContent = "Да";
-      closePopup();
     });
 }

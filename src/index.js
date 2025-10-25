@@ -61,12 +61,12 @@ function submitNewCardForm(evt) {
           onPhotoClick: handlePhotoCLick,
         })
       );
+      evt.target.reset();
+      closePopup();
     })
     .catch((err) => console.error(err))
     .finally(() => {
       evt.submitter.textContent = "Сохранить";
-      evt.target.reset();
-      closePopup();
     });
 }
 
