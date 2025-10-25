@@ -27,12 +27,16 @@ export function editProfile() {
 function submitProfileForm(evt) {
   evt.preventDefault();
 
+  evt.submitter.textContent = "Сохранение...";
+
   updateProfile({ name: nameInput.value, about: jobInput.value })
     .then((data) => {
       profileNameEl.textContent = data.name;
       profileDescriptionEl.textContent = data.about;
     })
     .catch((err) => console.error(err));
+
+  evt.submitter.textContent = "Сохранить";
 
   closePopup();
 }
@@ -46,9 +50,13 @@ export function editAvatar() {
 function submitAvatarForm(evt) {
   evt.preventDefault();
 
+  evt.submitter.textContent = "Сохранение...";
+
   updateAvatar(avatarInput.value).then((data) => {
     profilePhotoEl.style.backgroundImage = `url(${data.avatar})`;
   }).catch((err) => console.error(err));
+
+  evt.submitter.textContent = "Сохранить";
 
   closePopup();
 }

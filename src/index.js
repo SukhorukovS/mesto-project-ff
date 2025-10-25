@@ -41,6 +41,8 @@ function handlePhotoCLick(evt) {
 function submitNewCardForm(evt) {
   evt.preventDefault();
 
+  evt.submitter.textContent = "Сохранение...";
+
   createNewCard({
     name: placeNameInput.value,
     link: placePhotoLinkInput.value,
@@ -55,6 +57,8 @@ function submitNewCardForm(evt) {
       })
     );
   });
+
+  evt.submitter.textContent = "Сохранить";
 
   evt.target.reset();
 
