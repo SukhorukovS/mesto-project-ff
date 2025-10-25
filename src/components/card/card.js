@@ -1,4 +1,4 @@
-import { openPopup } from "../popup/popup";
+import { closePopup, openPopup } from "../popup/popup";
 import { clearValidation } from "../form/validation";
 import { validationConfig } from "../../config";
 import { deleteCard, likeCard, unLikeCard } from "../../api/api";
@@ -7,13 +7,14 @@ const cardTemplate = document
   .querySelector("#card-template")
   .content.querySelector(".places__item");
 
+export const placesWrap = document.querySelector(".places__list");
+
 export const newCardForm = document.forms["new-place"];
-export const placeNameInput = cardForm.elements["place-name"];
-export const placePhotoLinkInput = cardForm.elements.link;
+export const placeNameInput = newCardForm.elements["place-name"];
+export const placePhotoLinkInput = newCardForm.elements.link;
 
-export const deleteCardForm = document.form["delete-card"];
-
-let cardIdToDelete;
+export const deleteCardForm = document.forms["delete-card"];
+const submitButton = deleteCardForm.elements["delete-button"];
 
 export function createCardElement({
   data,
@@ -57,7 +58,7 @@ export function createCardElement({
 }
 
 export function handleDeleteCard(evt) {
-  cardIdToDelete = evt.target.datasetcardId;
+  submitButton.dataset.cardId = evt.target.dataset.cardId;
   openPopup("delete-card");
 }
 
@@ -73,7 +74,7 @@ export function handleLikeCard(evt) {
     unLikeCard(evt.target.dataset.cardId)
       .then((data) => {
         evt.target.classList.remove("card__like-button_is-active");
-        evt.target.nextElementSibling.textContent = data.likes.length;
+        evt.target.nextElementSibling.textContent = data.likes.length || "";
       })
       .catch((err) => console.error(err));
   }
@@ -82,8 +83,8 @@ export function handleLikeCard(evt) {
 export function addCard() {
   openPopup("new-card");
   placeNameInput.value = "";
-  linkInput.value = "";
-  clearValidation(cardForm, validationConfig);
+  placePhotoLinkInput.value = "";
+  clearValidation(newCardForm, validationConfig);
 }
 
 export function submitDeleteCardForm(evt) {
@@ -91,12 +92,18 @@ export function submitDeleteCardForm(evt) {
 
   evt.submitter.textContent = "Удаление...";
 
-  deleteCard(cardIdToDelete)
+  const cardId = submitButton.dataset.cardId;
+
+  deleteCard(cardId)
     .then(() => {
-      evt.target.closest(".card").remove();
+      document
+        .querySelector(`.card__delete-button[data-card-id="${cardId}"]`)
+        .closest(".card")
+        .remove();
     })
     .catch((err) => console.error(err))
     .finally(() => {
       evt.submitter.textContent = "Да";
+      closePopup();
     });
 }

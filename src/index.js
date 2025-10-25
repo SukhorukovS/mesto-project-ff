@@ -19,7 +19,8 @@ import {
   placeNameInput,
   placePhotoLinkInput,
   deleteCardForm,
-} from "./components/card/cards";
+  submitDeleteCardForm,
+} from "./components/card/card";
 import { enableValidation } from "./components/form/validation";
 import { validationConfig } from "./config";
 import { createNewCard, getCardList, getProfile } from "./api/api";
