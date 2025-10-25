@@ -13,7 +13,13 @@ import {
   profilePhotoEl,
 } from "./components/profile/profile";
 import { openPopup, closePopup } from "./components/popup/popup";
-import { placesWrap } from "./components/card/cards";
+import {
+  placesWrap,
+  newCardForm,
+  placeNameInput,
+  placePhotoLinkInput,
+  deleteCardForm,
+} from "./components/card/cards";
 import { enableValidation } from "./components/form/validation";
 import { validationConfig } from "./config";
 import { createNewCard, getCardList, getProfile } from "./api/api";
@@ -25,9 +31,6 @@ const avatarBlock = document.querySelector(".profile__avatar");
 const avatrEditButton = document.querySelector(".profile__avatar-button");
 const imgElement = document.querySelector(".popup__image");
 const photoCaption = document.querySelector(".popup__caption");
-const newCardForm = document.forms["new-place"];
-const placeNameInput = newCardForm.elements["place-name"];
-const placePhotoLinkInput = newCardForm.elements.link;
 
 let profileId;
 
@@ -46,23 +49,24 @@ function submitNewCardForm(evt) {
   createNewCard({
     name: placeNameInput.value,
     link: placePhotoLinkInput.value,
-  }).then((data) => {
-    placesWrap.prepend(
-      createCardElement({
-        data,
-        profileId,
-        onDelete: handleDeleteCard,
-        onLike: handleLikeCard,
-        onPhotoClick: handlePhotoCLick,
-      })
-    );
-  });
-
-  evt.submitter.textContent = "Сохранить";
-
-  evt.target.reset();
-
-  closePopup();
+  })
+    .then((data) => {
+      placesWrap.prepend(
+        createCardElement({
+          data,
+          profileId,
+          onDelete: handleDeleteCard,
+          onLike: handleLikeCard,
+          onPhotoClick: handlePhotoCLick,
+        })
+      );
+    })
+    .catch((err) => console.error(err))
+    .finally(() => {
+      evt.submitter.textContent = "Сохранить";
+      evt.target.reset();
+      closePopup();
+    });
 }
 
 Promise.all([getProfile(), getCardList()])
@@ -95,5 +99,7 @@ avatarBlock.addEventListener("click", editAvatar);
 avatrEditButton.addEventListener("click", editAvatar);
 
 newCardForm.addEventListener("submit", submitNewCardForm);
+
+deleteCardForm.addEventListener("submit", submitDeleteCardForm);
 
 enableValidation(validationConfig);

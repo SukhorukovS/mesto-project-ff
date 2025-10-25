@@ -34,11 +34,11 @@ function submitProfileForm(evt) {
       profileNameEl.textContent = data.name;
       profileDescriptionEl.textContent = data.about;
     })
-    .catch((err) => console.error(err));
-
-  evt.submitter.textContent = "Сохранить";
-
-  closePopup();
+    .catch((err) => console.error(err))
+    .finally(() => {
+      evt.submitter.textContent = "Сохранить";
+      closePopup();
+    });
 }
 
 export function editAvatar() {
@@ -52,11 +52,13 @@ function submitAvatarForm(evt) {
 
   evt.submitter.textContent = "Сохранение...";
 
-  updateAvatar(avatarInput.value).then((data) => {
-    profilePhotoEl.style.backgroundImage = `url(${data.avatar})`;
-  }).catch((err) => console.error(err));
-
-  evt.submitter.textContent = "Сохранить";
-
-  closePopup();
+  updateAvatar(avatarInput.value)
+    .then((data) => {
+      profilePhotoEl.style.backgroundImage = `url(${data.avatar})`;
+    })
+    .catch((err) => console.error(err))
+    .finally(() => {
+      evt.submitter.textContent = "Сохранить";
+      closePopup();
+    });
 }

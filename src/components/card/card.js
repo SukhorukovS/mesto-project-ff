@@ -7,19 +7,29 @@ const cardTemplate = document
   .querySelector("#card-template")
   .content.querySelector(".places__item");
 
-const cardForm = document.forms["new-place"];
-const placeNameInput = cardForm.elements["place-name"];
-const linkInput = cardForm.elements.link;
+export const newCardForm = document.forms["new-place"];
+export const placeNameInput = cardForm.elements["place-name"];
+export const placePhotoLinkInput = cardForm.elements.link;
 
-export function createCardElement({ data, profileId, onDelete, onLike, onPhotoClick }) {
+export const deleteCardForm = document.form["delete-card"];
+
+let cardIdToDelete;
+
+export function createCardElement({
+  data,
+  profileId,
+  onDelete,
+  onLike,
+  onPhotoClick,
+}) {
   const cardElement = cardTemplate.cloneNode(true);
   const deleteButton = cardElement.querySelector(".card__delete-button");
   const likeElement = cardElement.querySelector(".card__like-button");
   likeElement.dataset.cardId = data._id;
-  const hasUserLike = data.likes.some(user => user._id === profileId);
+  const hasUserLike = data.likes.some((user) => user._id === profileId);
   if (hasUserLike) {
     likeElement.classList.add("card__like-button_is-active");
-  };
+  }
 
   const photoElement = cardElement.querySelector(".card__image");
   const countLikeElement = cardElement.querySelector(".card__like-count");
@@ -29,11 +39,11 @@ export function createCardElement({ data, profileId, onDelete, onLike, onPhotoCl
   cardImage.alt = data.name;
 
   cardElement.querySelector(".card__title").textContent = data.name;
-  
+
   if (data.likes?.length) {
     countLikeElement.textContent = data.likes?.length;
   }
-  
+
   if (data.owner._id === profileId) {
     deleteButton.dataset.cardId = data._id;
     deleteButton.addEventListener("click", onDelete);
@@ -47,22 +57,25 @@ export function createCardElement({ data, profileId, onDelete, onLike, onPhotoCl
 }
 
 export function handleDeleteCard(evt) {
-  deleteCard(evt.target.dataset.cardId).then((data) => {
-    evt.target.closest(".card").remove();
-  }).catch((err) => console.error(err))
+  cardIdToDelete = evt.target.datasetcardId;
+  openPopup("delete-card");
 }
 
 export function handleLikeCard(evt) {
   if (!evt.target.classList.contains("card__like-button_is-active")) {
-    likeCard(evt.target.dataset.cardId).then((data) => {
-      evt.target.classList.add("card__like-button_is-active");
-      evt.target.nextElementSibling.textContent = data.likes.length;
-    }).catch((err) => console.error(err))
+    likeCard(evt.target.dataset.cardId)
+      .then((data) => {
+        evt.target.classList.add("card__like-button_is-active");
+        evt.target.nextElementSibling.textContent = data.likes.length;
+      })
+      .catch((err) => console.error(err));
   } else {
-    unLikeCard(evt.target.dataset.cardId).then((data) => {
-      evt.target.classList.remove("card__like-button_is-active");
-      evt.target.nextElementSibling.textContent = data.likes.length;
-    }).catch((err) => console.error(err))
+    unLikeCard(evt.target.dataset.cardId)
+      .then((data) => {
+        evt.target.classList.remove("card__like-button_is-active");
+        evt.target.nextElementSibling.textContent = data.likes.length;
+      })
+      .catch((err) => console.error(err));
   }
 }
 
@@ -71,4 +84,19 @@ export function addCard() {
   placeNameInput.value = "";
   linkInput.value = "";
   clearValidation(cardForm, validationConfig);
+}
+
+export function submitDeleteCardForm(evt) {
+  evt.preventDefault();
+
+  evt.submitter.textContent = "Удаление...";
+
+  deleteCard(cardIdToDelete)
+    .then(() => {
+      evt.target.closest(".card").remove();
+    })
+    .catch((err) => console.error(err))
+    .finally(() => {
+      evt.submitter.textContent = "Да";
+    });
 }
