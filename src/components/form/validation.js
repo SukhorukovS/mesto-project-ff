@@ -1,3 +1,5 @@
+import { validationConfig } from "../../config";
+
 export function enableValidation(validationConfig) {
   const formList = Array.from(document.forms);
 
@@ -6,17 +8,22 @@ export function enableValidation(validationConfig) {
   );
 }
 
-export function setValidationListeners(
-  formElement,
-  { inputSelector, submitButtonSelector, inactiveButtonClass }
-) {
-  const inputList = Array.from(formElement.querySelectorAll(inputSelector));
-  const buttonElement = formElement.querySelector(submitButtonSelector);
+export function setValidationListeners(formElement, validationConfig) {
+  const inputList = Array.from(
+    formElement.querySelectorAll(validationConfig.inputSelector)
+  );
+  const buttonElement = formElement.querySelector(
+    validationConfig.submitButtonSelector
+  );
 
   inputList.forEach((inputElement) => {
     inputElement.addEventListener("input", () => {
-      isValid(formElement, inputElement);
-      toggleButtonState(inputList, buttonElement, inactiveButtonClass);
+      isValid({ formElement, inputElement, validationConfig});
+      toggleButtonState(
+        inputList,
+        buttonElement,
+        validationConfig.inactiveButtonClass
+      );
     });
   });
 }
@@ -42,7 +49,11 @@ export function clearValidation(
   toggleButtonState(inputList, buttonElement, inactiveButtonClass);
 }
 
-export const isValid = (formElement, inputElement) => {
+const isValid = ({
+  formElement,
+  inputElement,
+  validationConfig: { inputErrorClass, errorActiveClass },
+}) => {
   if (inputElement.validity.patternMismatch) {
     inputElement.setCustomValidity(inputElement.dataset.errorMessage);
   } else {
@@ -50,23 +61,45 @@ export const isValid = (formElement, inputElement) => {
   }
 
   if (!inputElement.validity.valid) {
-    showInputError(formElement, inputElement, inputElement.validationMessage);
+    showInputError({
+      formElement,
+      inputElement,
+      errorMessage: inputElement.validationMessage,
+      inputErrorClass,
+      errorActiveClass,
+    });
   } else {
-    hideInputError(formElement, inputElement);
+    hideInputError({
+      formElement,
+      inputElement,
+      inputErrorClass,
+      errorActiveClass,
+    });
   }
 };
 
-const showInputError = (formElement, inputElement, errorMessage) => {
+const showInputError = ({
+  formElement,
+  inputElement,
+  errorMessage,
+  inputErrorClass,
+  errorActiveClass,
+}) => {
   const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
-  inputElement.classList.add("popup__input_type_error");
+  inputElement.classList.add(inputErrorClass);
   errorElement.textContent = errorMessage;
-  errorElement.classList.add("popup__input-error_active");
+  errorElement.classList.add(errorActiveClass);
 };
 
-const hideInputError = (formElement, inputElement) => {
+const hideInputError = ({
+  formElement,
+  inputElement,
+  inputErrorClass,
+  errorActiveClass,
+}) => {
   const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
-  inputElement.classList.remove("popup__input_type_error");
-  errorElement.classList.remove("popup__input-error_active");
+  inputElement.classList.remove(inputErrorClass);
+  errorElement.classList.remove(errorActiveClass);
   errorElement.textContent = "";
 };
 
